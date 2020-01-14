@@ -10,7 +10,7 @@ cors = CORS(app, resources={r"/api/*": {"origins":"*"}})
 def index():
     return render_template("index.html")
 
-@app.route("/api/1.0/")
+@app.route("/api/v1/")
 
 def api_root():
     response=""
