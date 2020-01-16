@@ -23,6 +23,7 @@ def decretos():
 
         for i in soup['rows']:
             body.append({
+                "id":i['id'],
                 "nro":i['cell'][0],
                 "fecha":i['cell'][1],
                 "descripcion":HTMLParser().unescape(i['cell'][2]).replace(u'\xa0', u'').strip(),
