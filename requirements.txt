@@ -1,5 +1,5 @@
-requests==2.20.0
-urllib3==1.22
+requests==2.18.4
+urllib3==1.24.2
 Flask==1.0.3
 tweepy==3.8.0
 Flask_Cors==3.0.7
