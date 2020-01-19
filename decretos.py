@@ -20,16 +20,16 @@ def decretos():
                 timeout=5,
             ).text #trae los últimos 50 decretos
         )
-
+        
         for i in soup['rows']:
             body.append({
                 "id":i['id'],
                 "nro":i['cell'][0],
                 "fecha":i['cell'][1],
-                "descripcion":HTMLParser().unescape(i['cell'][2]).replace(u'\xa0', u'').strip(),
-                "link":re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', i['cell'][3])[0]
+                "descripcion":BeautifulSoup(i['cell'][2], 'html.parser').text.strip(),
+                "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url
             })
-              
+        
         return json.dumps(
             body,
             indent=4,
