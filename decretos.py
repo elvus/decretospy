@@ -26,20 +26,23 @@ def decretos():
                 "id":i['id'],
                 "nro":i['cell'][0],
                 "fecha":i['cell'][1],
-                "descripcion":BeautifulSoup(i['cell'][2], 'html.parser').text.strip(),
+                "descripcion":BeautifulSoup(i['cell'][2], 'html.parser').text.title().strip(),
                 "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url
             })
+        return body
         
-        return json.dumps(
-            body,
-            indent=4,
-            sort_keys=True,
-            separators=(",", ": "),
-        )
     except requests.ConnectionError:
         print("error al conectar")
     except Exception as e:
         print(e)   
+
+def make_json(jsondata):
+    return json.dumps(
+            jsondata,
+            indent=4,
+            sort_keys=True,
+            separators=(",", ": "),
+        )
 
 def get_output():
     with open("decretos.json","r") as f:
@@ -47,7 +50,8 @@ def get_output():
     return response
 
 def write_output():
-    response = decretos()
+    sorted_list = sorted(decretos(), key=lambda i: datetime.strptime(i['fecha'], '%d/%m/%Y'))
+    response = make_json(sorted_list)
     with open("decretos.json", "w") as f:
         f.write(response)
 
