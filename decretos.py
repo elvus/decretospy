@@ -1,13 +1,20 @@
 import json
+import pymongo
+import re
 import requests
 import urllib3
-import re
 
 from bs4 import BeautifulSoup
 from datetime import datetime
 from html.parser import HTMLParser
+from pymongo import MongoClient
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+def connection():
+    client=MongoClient("mongodb://localhost:27017/")
+    db=client["decretospy"]
+    return db
 
 def decretos():
     body=[]
@@ -23,11 +30,12 @@ def decretos():
         
         for i in soup['rows']:
             body.append({
-                "id":i['id'],
+                "decreeId":i['id'],
                 "nro":i['cell'][0],
                 "fecha":i['cell'][1],
-                "descripcion":BeautifulSoup(i['cell'][2], 'html.parser').text.title().strip(),
-                "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url
+                "descripcion":i['cell'][1]+": "+BeautifulSoup(i['cell'][2], 'html.parser').text.title().strip(),
+                "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url,
+                'tweet':False
             })
         return body
         
@@ -36,7 +44,7 @@ def decretos():
     except Exception as e:
         print(e)   
 
-def make_json(jsondata):
+'''def make_json(jsondata):
     return json.dumps(
             jsondata,
             indent=4,
@@ -47,12 +55,15 @@ def make_json(jsondata):
 def get_output():
     with open("decretos.json","r") as f:
         response=f.read()
-    return response
+    return response'''
 
 def write_output():
+    db=connection()
     sorted_list = sorted(decretos(), key=lambda i: datetime.strptime(i['fecha'], '%d/%m/%Y'))
-    response = make_json(sorted_list)
-    with open("decretos.json", "w") as f:
-        f.write(response)
+    try:
+        db.decretos.insert(sorted_list)
+        db.decretos.create_index("decreeId", unique=True)
+    except pymongo.errors.DuplicateKeyError:
+        pass
 
 write_output()
