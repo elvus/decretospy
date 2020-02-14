@@ -35,7 +35,7 @@ def decretos():
                 "fecha":i['cell'][1],
                 "descripcion":i['cell'][1]+": "+BeautifulSoup(i['cell'][2], 'html.parser').text.title().strip(),
                 "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url,
-                'tweet':False
+                'tweet':True
             })
         return body
         
@@ -44,22 +44,10 @@ def decretos():
     except Exception as e:
         print(e)   
 
-'''def make_json(jsondata):
-    return json.dumps(
-            jsondata,
-            indent=4,
-            sort_keys=True,
-            separators=(",", ": "),
-        )
-
-def get_output():
-    with open("decretos.json","r") as f:
-        response=f.read()
-    return response'''
-
 def write_output():
     db=connection()
-    sorted_list = sorted(decretos(), key=lambda i: datetime.strptime(i['fecha'], '%d/%m/%Y'))
+    sorted_list = sorted(decretos(), key=lambda i: i['decreeId'])
+    print(sorted_list)
     try:
         db.decretos.insert(sorted_list)
         db.decretos.create_index("decreeId", unique=True)
