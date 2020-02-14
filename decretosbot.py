@@ -7,9 +7,8 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
-write_output()
-
 def maketweet():
+    write_output()
     db=connection()
     tweet=db.decretos.find({"tweet":False})
     if tweet.count()!=0:

@@ -35,7 +35,7 @@ def decretos():
                 "fecha":i['cell'][1],
                 "descripcion":i['cell'][1]+": "+BeautifulSoup(i['cell'][2], 'html.parser').text.title().strip(),
                 "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url,
-                'tweet':True
+                'tweet':False
             })
         return body
         
@@ -47,11 +47,13 @@ def decretos():
 def write_output():
     db=connection()
     sorted_list = sorted(decretos(), key=lambda i: i['decreeId'])
-    print(sorted_list)
-    try:
-        db.decretos.insert(sorted_list)
-        db.decretos.create_index("decreeId", unique=True)
-    except pymongo.errors.DuplicateKeyError:
-        pass
+    for i in sorted_list:
+        try:
+            db.decretos.insert_one(i)
+            db.decretos.create_index("decreeId", unique=True)
+        except pymongo.errors.DuplicateKeyError:
+            pass
+    
+    #print(list(db.decretos.find()))
 
 write_output()
