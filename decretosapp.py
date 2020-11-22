@@ -22,5 +22,5 @@ def api_root():
         write_output()
     return Response(response=response, status=200, mimetype='application/json')
 
-    if __name__=="__main__":
+if __name__=="__main__":
         app.run(debug=True)

@@ -44,19 +44,6 @@ def decretos():
     except Exception as e:
         print(e)   
 
-'''def make_json(jsondata):
-    return json.dumps(
-            jsondata,
-            indent=4,
-            sort_keys=True,
-            separators=(",", ": "),
-        )
-
-def get_output():
-    with open("decretos.json","r") as f:
-        response=f.read()
-    return response'''
-
 def write_output():
     db=connection()
     sorted_list = sorted(decretos(), key=lambda i: datetime.strptime(i['fecha'], '%d/%m/%Y'))
@@ -65,5 +52,3 @@ def write_output():
         db.decretos.create_index("decreeId", unique=True)
     except pymongo.errors.DuplicateKeyError:
         pass
-
-write_output()
