@@ -2,4 +2,5 @@ decretos.json
 .vscode
 config.py
 env
+build
 __pycache__
