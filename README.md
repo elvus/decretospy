@@ -11,7 +11,7 @@ $ FLASK_APP=decretosapp.py flask run
 
 La API se encuentra alojada en https://decretos.datospy.org
 
-# Ejemplo de Uso con Javascript
+# Ejemplo de uso con Javascript
 ```js
 fetch('https://decretos.datospy.org/api/all')
   .then(response => response.json())
@@ -31,7 +31,7 @@ fetch('https://decretos.datospy.org/api/all')
   }
 ]
 ```
-# Ejemplo de Uso con Filtros
+# Ejemplo de uso con Filtros
 ```js
 fetch('https://decretos.datospy.org/api/Se Rectifica El Decreto N° 6952')
   .then(response => response.json())
