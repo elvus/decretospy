@@ -29,6 +29,7 @@ fetch('https://decretos.datospy.org/api/all')
     "link": "https://www.presidencia.gov.py/archivos/documentos/DECRETO4289_u0ogzhkn.pdf", 
     "tweet": true
   }
+  ...
 ]
 ```
 # Ejemplo de uso con Filtros
