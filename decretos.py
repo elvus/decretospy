@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from html.parser import HTMLParser
 from pymongo import MongoClient
+from pymongo.errors import BulkWriteError
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -35,7 +36,8 @@ def decretos():
                 "fecha":i['cell'][1],
                 "descripcion":i['cell'][1]+": "+BeautifulSoup(i['cell'][2], 'html.parser').text.title().strip(),
                 "link":urllib3.util.parse_url(BeautifulSoup(i['cell'][3], 'html.parser').a['href']).url,
-                'tweet':False
+                'tweet':False,
+                'fecha_alta': datetime.now()
             })
         return body
         
@@ -47,8 +49,17 @@ def decretos():
 def write_output():
     db=connection()
     sorted_list = sorted(decretos(), key=lambda i: datetime.strptime(i['fecha'], '%d/%m/%Y'))
-    try:
-        db.decretos.insert(sorted_list)
-        db.decretos.create_index("decreeId", unique=True)
-    except pymongo.errors.DuplicateKeyError:
-        pass
+    for i in sorted_list:
+        try:
+            db.decretos.insert_one(i)
+            db.decretos.create_index("decreeId", unique=True)
+        except pymongo.errors.DuplicateKeyError:
+            if db.decretos.count_documents({ 'decreeId':i['decreeId'], 'descripcion':i['descripcion'], 'link':i['link']}) == 0:
+                db.decretos.update_one({'decreeId':i['decreeId']},
+                    {'$set':{'descripcion':i['descripcion'], 'link':i['link'], 'fecha_modificacion':datetime.now(),'tweet':False}})
+            else:
+                pass
+        except BulkWriteError as bwe:
+            pass
+
+write_output()
