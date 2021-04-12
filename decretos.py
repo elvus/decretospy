@@ -61,5 +61,3 @@ def write_output():
                 pass
         except BulkWriteError as bwe:
             pass
-
-write_output()
