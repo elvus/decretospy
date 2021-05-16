@@ -4,3 +4,4 @@ config.py
 env
 build
 __pycache__
+venv
