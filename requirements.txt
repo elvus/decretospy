@@ -1,8 +1,9 @@
-urllib3==1.25.8
 Flask==1.0.3
 requests==2.22.0
-pymongo==3.8.0
 tweepy==3.8.0
 Flask_Cors==3.0.7
+pymongo==3.8.0
+python_telegram_bot==13.4.1
+urllib3==1.25.8
 beautifulsoup4==4.9.3
-config==0.5.0.post0
+telegram==0.0.1

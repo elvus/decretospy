@@ -1,7 +1,7 @@
 import tweepy, time, sys, json
 import urllib3
 import urllib
-from decretos import connection, write_output
+from decretosv2 import connection, write_output
 from datetime import date, datetime
 from config import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
 
