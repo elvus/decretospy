@@ -22,7 +22,7 @@ def maketweet():
                 if error.api_code != 187:
                     raise error
     else:
-        tweet=db.decretos.find().sort("fecha",-1).limit(5)
+        tweet=db.decretos.find().sort("_id",-1).limit(5)
         for i in tweet:
             try:
                 api.update_status("%s %s"%(i['descripcion'][:240], i['link'].replace(" ","%20")))
