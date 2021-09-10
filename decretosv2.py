@@ -27,19 +27,20 @@ def obtener_decretos(url):
             td = tr.findAll('td')
             decreeId = [d for d in td[len(td)-1].a.get('href') if d.isdigit()]
             decretos.append({
-                "decreeId": ''.join(decreeId),
-                "nro": tr.find('th').text,
-                "fecha": td[0].text,
+                "decreeId": int(''.join(decreeId)),
+                "nro": int(tr.find('th').text),
+                "fecha": datetime.strptime(td[0].text, '%d/%m/%Y'),
                 "descripcion": td[0].text+": "+td[1].text.title().strip(),
                 "link": td[2].a.get('href'),
-                "tweet": False
+                "tweet": False,
+                'fecha_alta': datetime.now()
             })
 
         return decretos
     except requests.ConnectionError:
         print("error al conectar")
     except Exception as e:
-        print(e)
+        print('error: %s'%e)
 
 def decretos():
     decretos = []
@@ -61,7 +62,7 @@ def decretos():
 
 def write_output():
     db=connection()
-    sorted_list = sorted(decretos(), key=lambda i: datetime.strptime(i['fecha'], '%d/%m/%Y'))
+    sorted_list = sorted(decretos(), key=lambda i: i['fecha'])
     for i in sorted_list:
         try:
             db.decretos.insert_one(i)
@@ -74,3 +75,5 @@ def write_output():
                 pass
         except BulkWriteError as bwe:
             pass
+
+write_output()
