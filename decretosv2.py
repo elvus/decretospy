@@ -62,6 +62,7 @@ def decretos():
 
 def write_output():
     db=connection()
+    print(decretos())
     sorted_list = sorted(decretos(), key=lambda i: i['fecha'])
     for i in sorted_list:
         try:
@@ -75,5 +76,3 @@ def write_output():
                 pass
         except BulkWriteError as bwe:
             pass
-
-write_output()
