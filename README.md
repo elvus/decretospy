@@ -5,15 +5,15 @@ $ pip install -r requirements.txt
 ```
 $ FLASK_APP=decretosapp.py flask run
 ```
-- Go to http://127.0.0.1:5000/api/v1/
+- Ir a http://127.0.0.1:5000/api/v1/
 
 # API
 
-La API se encuentra alojada en https://decretos.datospy.org
+http://decretos.datospy.org/api/all
 
 # Ejemplo de uso con Javascript
 ```js
-fetch('https://decretos.datospy.org/api/all')
+fetch('http://decretos.datospy.org/api/all')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
@@ -34,7 +34,7 @@ fetch('https://decretos.datospy.org/api/all')
 ```
 # Ejemplo de uso con Filtros
 ```js
-fetch('https://decretos.datospy.org/api/Se Rectifica El Decreto N° 6952')
+fetch('http://decretos.datospy.org/api/Se Rectifica El Decreto N° 6952')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
