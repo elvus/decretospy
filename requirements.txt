@@ -1,7 +1,7 @@
 Flask==1.0.3
 requests==2.22.0
 tweepy==3.8.0
-Flask_Cors==3.0.7
+Flask_Cors==3.0.9
 pymongo==3.8.0
 python_telegram_bot==13.4.1
 urllib3==1.25.8
